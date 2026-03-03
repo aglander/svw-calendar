@@ -57,6 +57,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        venue: {
+          sportplatz: "hsl(var(--venue-sportplatz))",
+          mzh: "hsl(var(--venue-mzh))",
+          turnhalle: "hsl(var(--venue-turnhalle))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
