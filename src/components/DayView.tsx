@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Clock } from "lucide-react";
+import { sportIcons } from "@/lib/sportIcons";
 
 const HOUR_START = 7;
 const HOUR_END = 22;
@@ -31,17 +32,59 @@ const venueColors: Record<Venue, { bg: string; border: string; text: string }> =
   },
 };
 
-function getEventStyle(event: CalendarEvent) {
+/** Compute overlap columns for events so overlapping ones sit side by side */
+function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; totalCols: number })[] {
+  if (events.length === 0) return [];
+
+  const sorted = [...events].sort((a, b) => a.date.getTime() - b.date.getTime() || a.endDate.getTime() - b.endDate.getTime());
+
+  const columns: CalendarEvent[][] = [];
+
+  for (const event of sorted) {
+    let placed = false;
+    for (let c = 0; c < columns.length; c++) {
+      const lastInCol = columns[c][columns[c].length - 1];
+      if (lastInCol.endDate.getTime() <= event.date.getTime()) {
+        columns[c].push(event);
+        placed = true;
+        break;
+      }
+    }
+    if (!placed) {
+      columns.push([event]);
+    }
+  }
+
+  const totalCols = columns.length;
+  const result: (CalendarEvent & { col: number; totalCols: number })[] = [];
+  columns.forEach((col, colIndex) => {
+    col.forEach((event) => {
+      result.push({ ...event, col: colIndex, totalCols });
+    });
+  });
+
+  return result;
+}
+
+function getEventStyle(event: CalendarEvent & { col: number; totalCols: number }) {
   const startMinutes = event.date.getHours() * 60 + event.date.getMinutes();
   const endMinutes = event.endDate.getHours() * 60 + event.endDate.getMinutes();
   const top = ((startMinutes - HOUR_START * 60) / 60) * HOUR_HEIGHT;
   const height = Math.max(((endMinutes - startMinutes) / 60) * HOUR_HEIGHT, 24);
-  return { top: `${top}px`, height: `${height}px` };
+  const widthPercent = 100 / event.totalCols;
+  const leftPercent = widthPercent * event.col;
+  return {
+    top: `${top}px`,
+    height: `${height}px`,
+    left: `calc(${leftPercent}% + 2px)`,
+    width: `calc(${widthPercent}% - 4px)`,
+  };
 }
 
 function TimeGrid({ events, venue }: { events: CalendarEvent[]; venue: Venue }) {
   const hours = Array.from({ length: HOUR_END - HOUR_START }, (_, i) => HOUR_START + i);
   const colors = venueColors[venue];
+  const laid = layoutEvents(events);
 
   return (
     <div className="relative flex">
@@ -70,21 +113,25 @@ function TimeGrid({ events, venue }: { events: CalendarEvent[]; venue: Venue }) 
         ))}
 
         {/* Events */}
-        {events.map((event) => {
+        {laid.map((event) => {
           const style = getEventStyle(event);
+          const SportIcon = sportIcons[event.sport];
           return (
             <div
               key={event.id}
               className={cn(
-                "absolute left-1 right-1 rounded-md border-l-3 px-2 py-1 overflow-hidden cursor-default",
+                "absolute rounded-md border-l-3 px-1.5 py-1 overflow-hidden cursor-default",
                 colors.bg,
                 colors.border
               )}
               style={style}
             >
-              <p className="text-xs font-semibold text-card-foreground truncate leading-tight">
-                {event.title}
-              </p>
+              <div className="flex items-center gap-1">
+                {SportIcon && <SportIcon className="h-3 w-3 flex-shrink-0 text-muted-foreground" />}
+                <p className="text-[11px] font-semibold text-card-foreground truncate leading-tight">
+                  {event.title}
+                </p>
+              </div>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
                 <Clock className="h-2.5 w-2.5" />
                 {format(event.date, "HH:mm")} – {format(event.endDate, "HH:mm")}
@@ -119,7 +166,6 @@ export function DayView() {
       </div>
 
       {isMobile ? (
-        /* Mobile: Tabs for venues */
         <Tabs defaultValue={visibleVenues[0] || "Sportplatz"}>
           <TabsList className="w-full">
             {visibleVenues.map((v) => (
@@ -149,7 +195,6 @@ export function DayView() {
           ))}
         </Tabs>
       ) : (
-        /* Desktop: Columns for venues */
         <div className="flex gap-4">
           {visibleVenues.map((v) => (
             <div key={v} className="flex-1 min-w-0">
