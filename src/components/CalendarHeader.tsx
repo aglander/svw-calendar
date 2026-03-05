@@ -1,15 +1,14 @@
 import { useCalendar } from "@/context/CalendarContext";
 import { CalendarView } from "@/types/calendar";
+import { useEffect } from "react";
 import {
-  ChevronLeft,
-  ChevronRight,
-  Calendar as CalIcon,
+  Calendar as CalendarIcon,
+  ClipboardList,
   Menu,
 } from "lucide-react";
-import { addDays, addWeeks, addMonths, format } from "date-fns";
-import { de } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const viewLabels: Record<CalendarView, string> = {
   day: "Tag",
@@ -22,15 +21,16 @@ interface CalendarHeaderProps {
 }
 
 export function CalendarHeader({ onOpenFilter }: CalendarHeaderProps) {
-  const { currentDate, setCurrentDate, view, setView } = useCalendar();
+  const { view, setView, mode, setMode } = useCalendar();
+  const isMobile = useIsMobile();
 
-  const navigate = (dir: -1 | 1) => {
-    if (view === "day") setCurrentDate(addDays(currentDate, dir));
-    else if (view === "week") setCurrentDate(addWeeks(currentDate, dir));
-    else setCurrentDate(addMonths(currentDate, dir));
-  };
+  useEffect(() => {
+    if (isMobile && view === "week") {
+      setView("day");
+    }
+  }, [isMobile, view, setView]);
 
-  const goToday = () => setCurrentDate(new Date());
+  const availableViews: CalendarView[] = isMobile ? ["day", "month"] : ["day", "week", "month"];
 
   return (
     <header className="flex items-center gap-2 px-4 py-3 bg-card border-b border-border sticky top-0 z-20">
@@ -44,25 +44,38 @@ export function CalendarHeader({ onOpenFilter }: CalendarHeaderProps) {
         <Menu className="h-5 w-5" />
       </Button>
 
-      {/* Nav */}
-      <div className="flex items-center gap-1">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button variant="ghost" size="icon" onClick={() => navigate(1)}>
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+      <div className="flex bg-muted rounded-lg p-0.5">
+        <button
+          onClick={() => setMode("standard")}
+          className={cn(
+            "px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors inline-flex items-center gap-1.5",
+            mode === "standard"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <CalendarIcon className="h-3.5 w-3.5" />
+          Standard
+        </button>
+        <button
+          onClick={() => setMode("plan")}
+          className={cn(
+            "px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors inline-flex items-center gap-1.5",
+            mode === "plan"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <ClipboardList className="h-3.5 w-3.5" />
+          Plan
+        </button>
       </div>
-
-      <Button variant="outline" size="sm" onClick={goToday} className="text-xs">
-        Heute
-      </Button>
 
       <div className="flex-1" />
 
       {/* View switcher */}
       <div className="flex bg-muted rounded-lg p-0.5">
-        {(["day", "week", "month"] as CalendarView[]).map((v) => (
+        {availableViews.map((v) => (
           <button
             key={v}
             onClick={() => setView(v)}

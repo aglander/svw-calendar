@@ -61,6 +61,7 @@ export default {
           sportplatz: "hsl(var(--venue-sportplatz))",
           mzh: "hsl(var(--venue-mzh))",
           turnhalle: "hsl(var(--venue-turnhalle))",
+          tanzraum: "hsl(var(--venue-tanzraum))",
         },
       },
       borderRadius: {

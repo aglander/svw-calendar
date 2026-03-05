@@ -49,6 +49,7 @@
     --venue-sportplatz: 140 60% 35%;
     --venue-mzh: 210 60% 50%;
     --venue-turnhalle: 30 80% 55%;
+    --venue-tanzraum: 185 65% 45%;
     --event-card-shadow: 0 2px 8px -2px hsl(140 20% 50% / 0.15);
   }
 
@@ -104,6 +105,9 @@
   .venue-turnhalle {
     @apply bg-[hsl(var(--venue-turnhalle))];
   }
+  .venue-tanzraum {
+    @apply bg-[hsl(var(--venue-tanzraum))];
+  }
   .venue-sportplatz-text {
     color: hsl(var(--venue-sportplatz));
   }
@@ -112,5 +116,8 @@
   }
   .venue-turnhalle-text {
     color: hsl(var(--venue-turnhalle));
+  }
+  .venue-tanzraum-text {
+    color: hsl(var(--venue-tanzraum));
   }
 }

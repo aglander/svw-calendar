@@ -67,7 +67,7 @@ export function getAllTeamIds(): string[] {
   return ids;
 }
 
-const venues: Venue[] = ["Sportplatz", "MZH", "Turnhalle"];
+const venues: Venue[] = ["Sportplatz", "MZH", "Turnhalle", "Tanzraum"];
 
 function randomTime(base: Date, hourMin: number, hourMax: number): Date {
   const d = new Date(base);

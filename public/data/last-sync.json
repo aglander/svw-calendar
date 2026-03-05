@@ -1,0 +1,14 @@
+{
+  "generatedAtIso": "2026-03-05T07:53:18.024Z",
+  "sourceCount": 36,
+  "activeSourceCount": 1,
+  "eventCount": 0,
+  "shadowSlotCount": 263,
+  "errorCount": 1,
+  "errors": [
+    {
+      "teamId": "fb-ak40",
+      "error": "fetch failed"
+    }
+  ]
+}

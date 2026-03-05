@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "teamId": "fb-1m",
+      "teamName": "1. Männer",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-2m",
+      "teamName": "2. Männer",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-ak40",
+      "teamName": "AK 40",
+      "sport": "Fußball",
+      "url": "webcal://p128-caldav.icloud.com/published/2/MTAzODUzMjcwNzEwMzg1MyFdX7TorcAOmfOwy2sP30_QG4L3OfxnOVNukuz-HIUbUhUS8SVtRCaUpsf9JG6lXcIjGVwHQblfxri65Ztv7Cs",
+      "enabled": true,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-ak50",
+      "teamName": "AK 50",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-u19",
+      "teamName": "A-Junioren | U19",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-1cu15",
+      "teamName": "1. C-Junioren | U15",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-2cu15",
+      "teamName": "2. C-Junioren | U15",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-1du13",
+      "teamName": "1. D-Junioren | U13",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-2du13",
+      "teamName": "2. D-Junioren | U13",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-3du13",
+      "teamName": "3. D-Junioren | U13",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-1eu11",
+      "teamName": "1. E-Junioren | U11",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-2eu11",
+      "teamName": "2. E-Junioren | U11",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-3eu11",
+      "teamName": "3. E-Junioren | U11",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-1fu9",
+      "teamName": "1. F-Junioren | U9",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-2fu9",
+      "teamName": "2. F-Junioren | U9",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-3fu9",
+      "teamName": "3. F-Junioren | U9",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-u7",
+      "teamName": "Bambinis | U7",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-frauen",
+      "teamName": "Frauen",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-cu15w",
+      "teamName": "C-Juniorinnen | U15",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-1du13w",
+      "teamName": "1. D-Juniorinnen | U13",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "fb-2du13w",
+      "teamName": "2. D-Juniorinnen | U13",
+      "sport": "Fußball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "bb-herren",
+      "teamName": "Herren",
+      "sport": "Basketball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "bb-u16",
+      "teamName": "U16",
+      "sport": "Basketball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "bb-u14u12",
+      "teamName": "U14 / U12",
+      "sport": "Basketball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "tt-1",
+      "teamName": "1. Mannschaft",
+      "sport": "Tischtennis",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "tt-2",
+      "teamName": "2. Mannschaft",
+      "sport": "Tischtennis",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "tt-3",
+      "teamName": "3. Mannschaft",
+      "sport": "Tischtennis",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "tt-4",
+      "teamName": "4. Mannschaft",
+      "sport": "Tischtennis",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "tt-jugend",
+      "teamName": "Jugend",
+      "sport": "Tischtennis",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-Volleyball",
+      "teamName": "Volleyball",
+      "sport": "Volleyball",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-Geräteturnen",
+      "teamName": "Geräteturnen",
+      "sport": "Geräteturnen",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-Gymnastik / Workout",
+      "teamName": "Gymnastik / Workout",
+      "sport": "Gymnastik / Workout",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-Tanzen",
+      "teamName": "Tanzen",
+      "sport": "Tanzen",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-Showdance",
+      "teamName": "Showdance",
+      "sport": "Showdance",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-DiscoDance",
+      "teamName": "DiscoDance",
+      "sport": "DiscoDance",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    },
+    {
+      "teamId": "sport-Badminton",
+      "teamName": "Badminton",
+      "sport": "Badminton",
+      "url": "",
+      "enabled": false,
+      "timezone": "Europe/Berlin",
+      "venueDefault": "Sportplatz"
+    }
+  ]
+}

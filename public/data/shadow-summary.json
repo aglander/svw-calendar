@@ -1,0 +1,21 @@
+{
+  "slotCount": 104,
+  "ownerTypeCounts": {
+    "schule": 28,
+    "svw": 60,
+    "extern": 16
+  },
+  "svwSportCounts": {
+    "Basketball": 11,
+    "Tanzen": 3,
+    "DiscoDance": 5,
+    "Badminton": 2,
+    "Geräteturnen": 2,
+    "Volleyball": 6,
+    "Fußball": 22,
+    "Showdance": 1,
+    "Gymnastik / Workout": 4,
+    "Tischtennis": 4
+  },
+  "unknownLabels": {}
+}

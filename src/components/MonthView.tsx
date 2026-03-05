@@ -1,5 +1,6 @@
 import { useCalendar } from "@/context/CalendarContext";
 import {
+  addMonths,
   format,
   startOfMonth,
   endOfMonth,
@@ -11,6 +12,8 @@ import {
 } from "date-fns";
 import { de } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function MonthView() {
   const { filteredEvents, currentDate, setCurrentDate, setView } = useCalendar();
@@ -25,9 +28,22 @@ export function MonthView() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-lg font-bold text-foreground">
-        {format(currentDate, "MMMM yyyy", { locale: de })}
-      </h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-lg font-bold text-foreground">
+          {format(currentDate, "MMMM yyyy", { locale: de })}
+        </h2>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" onClick={() => setCurrentDate(addMonths(currentDate, -1))}>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button variant="outline" size="sm" className="text-xs" onClick={() => setCurrentDate(new Date())}>
+            Heute
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => setCurrentDate(addMonths(currentDate, 1))}>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
       <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
         {weekdays.map((wd) => (
           <div

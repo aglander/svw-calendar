@@ -5,12 +5,14 @@ import { FilterSidebar } from "@/components/FilterSidebar";
 import { DayView } from "@/components/DayView";
 import { WeekView } from "@/components/WeekView";
 import { MonthView } from "@/components/MonthView";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 function CalendarContent() {
-  const { view } = useCalendar();
+  const { view, isLoading, error } = useCalendar();
   const [filterOpen, setFilterOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -38,8 +40,14 @@ function CalendarContent() {
 
         {/* Main content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          {isLoading && (
+            <p className="text-sm text-muted-foreground mb-4">Kalenderdaten werden geladen...</p>
+          )}
+          {error && (
+            <p className="text-sm text-destructive mb-4">{error}</p>
+          )}
           {view === "day" && <DayView />}
-          {view === "week" && <WeekView />}
+          {view === "week" && !isMobile && <WeekView />}
           {view === "month" && <MonthView />}
         </main>
       </div>

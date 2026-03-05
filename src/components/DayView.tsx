@@ -1,18 +1,19 @@
 import { useCalendar } from "@/context/CalendarContext";
 import { CalendarEvent, Venue } from "@/types/calendar";
-import { format, isSameDay } from "date-fns";
+import { addDays, format, isSameDay } from "date-fns";
 import { de } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { sportIcons } from "@/lib/sportIcons";
+import { Button } from "@/components/ui/button";
 
 const HOUR_START = 7;
 const HOUR_END = 22;
 const HOUR_HEIGHT = 64; // px per hour
 
-const venues: Venue[] = ["Sportplatz", "MZH", "Turnhalle"];
+const venues: Venue[] = ["Sportplatz", "MZH", "Turnhalle", "Tanzraum"];
 
 const venueColors: Record<Venue, { bg: string; border: string; text: string }> = {
   Sportplatz: {
@@ -30,13 +31,36 @@ const venueColors: Record<Venue, { bg: string; border: string; text: string }> =
     border: "border-l-venue-turnhalle",
     text: "text-venue-turnhalle",
   },
+  Tanzraum: {
+    bg: "bg-venue-tanzraum/10",
+    border: "border-l-venue-tanzraum",
+    text: "text-venue-tanzraum",
+  },
 };
 
 /** Compute overlap columns for events so overlapping ones sit side by side */
 function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; totalCols: number })[] {
   if (events.length === 0) return [];
 
-  const sorted = [...events].sort((a, b) => a.date.getTime() - b.date.getTime() || a.endDate.getTime() - b.endDate.getTime());
+  const getFieldOrder = (event: CalendarEvent): number => {
+    const match = /\(Feld\s*(\d+)\)/i.exec(event.title);
+    if (!match) return 99;
+    const fieldNumber = Number(match[1]);
+    return Number.isFinite(fieldNumber) ? fieldNumber : 99;
+  };
+
+  const sorted = [...events].sort((a, b) => {
+    const byStart = a.date.getTime() - b.date.getTime();
+    if (byStart !== 0) return byStart;
+
+    const byField = getFieldOrder(a) - getFieldOrder(b);
+    if (byField !== 0) return byField;
+
+    const byEnd = a.endDate.getTime() - b.endDate.getTime();
+    if (byEnd !== 0) return byEnd;
+
+    return a.title.localeCompare(b.title, "de");
+  });
 
   const columns: CalendarEvent[][] = [];
 
@@ -145,7 +169,7 @@ function TimeGrid({ events, venue }: { events: CalendarEvent[]; venue: Venue }) 
 }
 
 export function DayView() {
-  const { filteredEvents, currentDate, activeVenues } = useCalendar();
+  const { filteredEvents, currentDate, activeVenues, setCurrentDate } = useCalendar();
   const isMobile = useIsMobile();
 
   const dayEvents = filteredEvents.filter((e) => isSameDay(e.date, currentDate));
@@ -155,14 +179,27 @@ export function DayView() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div>
-        <h2 className="text-lg font-bold text-foreground">
-          {format(currentDate, "d. MMMM yyyy", { locale: de })}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {format(currentDate, "EEEE", { locale: de })}, Woche{" "}
-          {format(currentDate, "w", { locale: de })}
-        </p>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold text-foreground">
+            {format(currentDate, "d. MMMM yyyy", { locale: de })}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {format(currentDate, "EEEE", { locale: de })}, Woche{" "}
+            {format(currentDate, "w", { locale: de })}
+          </p>
+        </div>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" onClick={() => setCurrentDate(addDays(currentDate, -1))}>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button variant="outline" size="sm" className="text-xs" onClick={() => setCurrentDate(new Date())}>
+            Heute
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => setCurrentDate(addDays(currentDate, 1))}>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {isMobile ? (
@@ -175,7 +212,8 @@ export function DayView() {
                     "w-2 h-2 rounded-full",
                     v === "Sportplatz" && "bg-venue-sportplatz",
                     v === "MZH" && "bg-venue-mzh",
-                    v === "Turnhalle" && "bg-venue-turnhalle"
+                    v === "Turnhalle" && "bg-venue-turnhalle",
+                    v === "Tanzraum" && "bg-venue-tanzraum"
                   )}
                 />
                 {v}
@@ -204,7 +242,8 @@ export function DayView() {
                     "w-2.5 h-2.5 rounded-full",
                     v === "Sportplatz" && "bg-venue-sportplatz",
                     v === "MZH" && "bg-venue-mzh",
-                    v === "Turnhalle" && "bg-venue-turnhalle"
+                    v === "Turnhalle" && "bg-venue-turnhalle",
+                    v === "Tanzraum" && "bg-venue-tanzraum"
                   )}
                 />
                 <h3 className="text-sm font-semibold text-foreground">{v}</h3>
