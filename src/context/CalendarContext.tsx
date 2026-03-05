@@ -66,6 +66,7 @@ function parseEventJson(event: CalendarEventJson): CalendarEvent {
     updatedAtIso: event.updatedAtIso,
     verification: event.verification,
     sourceType: event.sourceType || "calendar",
+    bookingType: event.bookingType || "svw",
   };
 }
 
@@ -245,6 +246,7 @@ export function CalendarProvider({ children }: { children: React.ReactNode }) {
           sport,
           teamName: owner,
           sourceType: "shadow",
+          bookingType: slot.ownerType,
         });
       });
     });

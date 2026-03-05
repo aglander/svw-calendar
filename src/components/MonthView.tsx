@@ -14,6 +14,7 @@ import { de } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getEventColorSet } from "@/lib/eventColors";
 
 export function MonthView() {
   const { filteredEvents, currentDate, setCurrentDate, setView } = useCalendar();
@@ -83,7 +84,8 @@ export function MonthView() {
                   {dayEvents.slice(0, 3).map((e) => (
                     <span
                       key={e.id}
-                      className="w-1.5 h-1.5 rounded-full bg-primary"
+                      className={cn("w-1.5 h-1.5 rounded-full", getEventColorSet(e).dot)}
+                      style={{ backgroundColor: getEventColorSet(e).dotColor }}
                     />
                   ))}
                   {dayEvents.length > 3 && (

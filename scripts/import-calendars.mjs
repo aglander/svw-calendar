@@ -264,6 +264,7 @@ function normalizeRawEvent(rawEvent, source, generatedAtIso) {
     sport: source.sport,
     teamName: source.teamName,
     sourceType: "calendar",
+    bookingType: "svw",
     sourceUrlHash: sha(normalizeFeedUrl(source.url)).slice(0, 16),
     updatedAtIso: (rawEvent.lastModified || new Date(generatedAtIso)).toISOString(),
   };

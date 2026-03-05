@@ -8,35 +8,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { sportIcons } from "@/lib/sportIcons";
 import { Button } from "@/components/ui/button";
+import { getEventColorSet } from "@/lib/eventColors";
 
 const HOUR_START = 7;
 const HOUR_END = 22;
 const HOUR_HEIGHT = 64; // px per hour
 
 const venues: Venue[] = ["Sportplatz", "MZH", "Turnhalle", "Tanzraum"];
-
-const venueColors: Record<Venue, { bg: string; border: string; text: string }> = {
-  Sportplatz: {
-    bg: "bg-venue-sportplatz/10",
-    border: "border-l-venue-sportplatz",
-    text: "text-venue-sportplatz",
-  },
-  MZH: {
-    bg: "bg-venue-mzh/10",
-    border: "border-l-venue-mzh",
-    text: "text-venue-mzh",
-  },
-  Turnhalle: {
-    bg: "bg-venue-turnhalle/10",
-    border: "border-l-venue-turnhalle",
-    text: "text-venue-turnhalle",
-  },
-  Tanzraum: {
-    bg: "bg-venue-tanzraum/10",
-    border: "border-l-venue-tanzraum",
-    text: "text-venue-tanzraum",
-  },
-};
 
 /** Compute overlap columns for events so overlapping ones sit side by side */
 function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; totalCols: number })[] {
@@ -107,9 +85,8 @@ function getEventStyle(event: CalendarEvent & { col: number; totalCols: number }
   };
 }
 
-function TimeGrid({ events, venue }: { events: CalendarEvent[]; venue: Venue }) {
+function TimeGrid({ events }: { events: CalendarEvent[] }) {
   const hours = Array.from({ length: HOUR_END - HOUR_START }, (_, i) => HOUR_START + i);
-  const colors = venueColors[venue];
   const laid = layoutEvents(events);
 
   return (
@@ -142,6 +119,7 @@ function TimeGrid({ events, venue }: { events: CalendarEvent[]; venue: Venue }) 
         {laid.map((event) => {
           const style = getEventStyle(event);
           const SportIcon = sportIcons[event.sport];
+          const colors = getEventColorSet(event);
           return (
             <div
               key={event.id}
@@ -150,7 +128,11 @@ function TimeGrid({ events, venue }: { events: CalendarEvent[]; venue: Venue }) 
                 colors.bg,
                 colors.border
               )}
-              style={style}
+              style={{
+                ...style,
+                backgroundColor: colors.backgroundColor,
+                borderLeftColor: colors.borderColor,
+              }}
             >
               <div className="flex items-center gap-1">
                 {SportIcon && <SportIcon className="h-3 w-3 flex-shrink-0 text-muted-foreground" />}
@@ -208,16 +190,7 @@ export function DayView() {
         <Tabs defaultValue={visibleVenues[0] || "Sportplatz"}>
           <TabsList className="w-full">
             {visibleVenues.map((v) => (
-              <TabsTrigger key={v} value={v} className="flex-1 gap-1.5 text-xs">
-                <span
-                  className={cn(
-                    "w-2 h-2 rounded-full",
-                    v === "Sportplatz" && "bg-venue-sportplatz",
-                    v === "MZH" && "bg-venue-mzh",
-                    v === "Turnhalle" && "bg-venue-turnhalle",
-                    v === "Tanzraum" && "bg-venue-tanzraum"
-                  )}
-                />
+              <TabsTrigger key={v} value={v} className="flex-1 text-xs">
                 {v}
               </TabsTrigger>
             ))}
@@ -229,7 +202,7 @@ export function DayView() {
                   Keine Termine
                 </p>
               ) : (
-                <TimeGrid events={eventsByVenue(v)} venue={v} />
+                <TimeGrid events={eventsByVenue(v)} />
               )}
             </TabsContent>
           ))}
@@ -239,15 +212,6 @@ export function DayView() {
           {visibleVenues.map((v) => (
             <div key={v} className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2 pb-1 border-b border-border">
-                <span
-                  className={cn(
-                    "w-2.5 h-2.5 rounded-full",
-                    v === "Sportplatz" && "bg-venue-sportplatz",
-                    v === "MZH" && "bg-venue-mzh",
-                    v === "Turnhalle" && "bg-venue-turnhalle",
-                    v === "Tanzraum" && "bg-venue-tanzraum"
-                  )}
-                />
                 <h3 className="text-sm font-semibold text-foreground">{v}</h3>
                 <span className="text-xs text-muted-foreground">
                   ({eventsByVenue(v).length})
@@ -258,7 +222,7 @@ export function DayView() {
                   Keine Termine
                 </p>
               ) : (
-                <TimeGrid events={eventsByVenue(v)} venue={v} />
+                <TimeGrid events={eventsByVenue(v)} />
               )}
             </div>
           ))}

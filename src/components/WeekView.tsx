@@ -13,35 +13,13 @@ import { de } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getEventColorSet } from "@/lib/eventColors";
 
 const HOUR_START = 7;
 const HOUR_END = 22;
 const HOUR_HEIGHT = 52;
 
 const venues: Venue[] = ["Sportplatz", "MZH", "Turnhalle", "Tanzraum"];
-
-const venueColors: Record<Venue, { bg: string; border: string; text: string }> = {
-  Sportplatz: {
-    bg: "bg-venue-sportplatz/10",
-    border: "border-l-venue-sportplatz",
-    text: "text-venue-sportplatz",
-  },
-  MZH: {
-    bg: "bg-venue-mzh/10",
-    border: "border-l-venue-mzh",
-    text: "text-venue-mzh",
-  },
-  Turnhalle: {
-    bg: "bg-venue-turnhalle/10",
-    border: "border-l-venue-turnhalle",
-    text: "text-venue-turnhalle",
-  },
-  Tanzraum: {
-    bg: "bg-venue-tanzraum/10",
-    border: "border-l-venue-tanzraum",
-    text: "text-venue-tanzraum",
-  },
-};
 
 function getFieldOrder(event: CalendarEvent): number {
   const match = /\(Feld\s*(\d+)\)/i.exec(event.title);
@@ -194,8 +172,6 @@ export function WeekView() {
             {days.map((day) => {
               const dayEvents = eventsForVenue.filter((event) => isSameDay(event.date, day));
               const laid = layoutEvents(dayEvents);
-              const color = venueColors[selectedVenue];
-
               return (
                 <div
                   key={day.toISOString()}
@@ -212,15 +188,20 @@ export function WeekView() {
 
                   {laid.map((event) => {
                     const style = getEventStyle(event);
+                    const colors = getEventColorSet(event);
                     return (
                       <div
                         key={event.id}
                         className={cn(
                           "absolute rounded-md border-l-3 px-1.5 py-1 overflow-hidden",
-                          color.bg,
-                          color.border
+                          colors.bg,
+                          colors.border
                         )}
-                        style={style}
+                        style={{
+                          ...style,
+                          backgroundColor: colors.backgroundColor,
+                          borderLeftColor: colors.borderColor,
+                        }}
                       >
                         <p className="text-[11px] font-semibold text-card-foreground truncate leading-tight">
                           {event.title}

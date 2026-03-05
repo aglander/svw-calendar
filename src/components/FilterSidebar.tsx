@@ -8,14 +8,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
-
-const venueColors: Record<Venue, string> = {
-  Sportplatz: "bg-venue-sportplatz",
-  MZH: "bg-venue-mzh",
-  Turnhalle: "bg-venue-turnhalle",
-  Tanzraum: "bg-venue-tanzraum",
-};
 
 export function FilterSidebar() {
   const {
@@ -45,7 +37,6 @@ export function FilterSidebar() {
                 checked={activeVenues.has(venue)}
                 onCheckedChange={() => toggleVenue(venue)}
               />
-              <span className={cn("w-2.5 h-2.5 rounded-full", venueColors[venue])} />
               <span className="text-sm font-medium">{venue}</span>
             </label>
           ))}
