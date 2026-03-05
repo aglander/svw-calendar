@@ -43,7 +43,13 @@ export function EventCard({ event }: { event: CalendarEvent }) {
               {event.venue}
             </span>
             <span className={cn("text-[10px] font-medium", colors.text)}>
-              {event.bookingType === "schule" ? "Schule" : event.bookingType === "extern" ? "Extern" : "SVW"}
+              {event.bookingType === "schule"
+                ? "Schule"
+                : event.bookingType === "extern"
+                  ? "Extern"
+                  : event.bookingType === "gesperrt"
+                    ? "Gesperrt"
+                    : "SVW"}
             </span>
           </div>
         </div>

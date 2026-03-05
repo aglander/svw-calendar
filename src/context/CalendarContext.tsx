@@ -251,6 +251,29 @@ export function CalendarProvider({ children }: { children: React.ReactNode }) {
       });
     });
 
+    // Weekly lock window in plan mode: Turnhalle every Sunday 13:00-15:00
+    days.forEach((day) => {
+      if (getISODay(day) !== 7) return;
+
+      const start = new Date(day);
+      start.setHours(13, 0, 0, 0);
+      const end = new Date(day);
+      end.setHours(15, 0, 0, 0);
+
+      events.push({
+        id: `shadow-gesperrt-turnhalle-${day.toISOString().slice(0, 10)}`,
+        title: "Gesperrt",
+        date: start,
+        endDate: end,
+        venue: "Turnhalle",
+        teamId: "shadow-gesperrt-turnhalle",
+        sport: "Sperrzeit",
+        teamName: "Gesperrt",
+        sourceType: "shadow",
+        bookingType: "gesperrt",
+      });
+    });
+
     return events.sort((a, b) => a.date.getTime() - b.date.getTime());
   }, [shadowSlots, currentDate]);
 

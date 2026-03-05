@@ -44,8 +44,37 @@ function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; 
     return a.title.localeCompare(b.title, "de");
   });
 
+  const getFixedFieldColumn = (event: CalendarEvent): number | null => {
+    if (event.sourceType !== "shadow") return null;
+    if (event.venue !== "MZH" && event.venue !== "Sportplatz") return null;
+
+    const match = /\(Feld\s*(\d+)\)/i.exec(event.title);
+    if (!match) return null;
+
+    const field = Number(match[1]);
+    if (field === 1) return 0;
+    if (field === 2) return 1;
+    return null;
+  };
+
+  const fixedFieldEvents: (CalendarEvent & { col: number; totalCols: number })[] = [];
+  const regularEvents: CalendarEvent[] = [];
+
+  sorted.forEach((event) => {
+    const fixedCol = getFixedFieldColumn(event);
+    if (fixedCol !== null) {
+      fixedFieldEvents.push({ ...event, col: fixedCol, totalCols: 2 });
+    } else {
+      regularEvents.push(event);
+    }
+  });
+
+  if (regularEvents.length === 0) {
+    return fixedFieldEvents;
+  }
+
   const columns: CalendarEvent[][] = [];
-  for (const event of sorted) {
+  for (const event of regularEvents) {
     let placed = false;
     for (let c = 0; c < columns.length; c++) {
       const lastInCol = columns[c][columns[c].length - 1];
@@ -65,7 +94,7 @@ function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; 
   columns.forEach((col, colIndex) => {
     col.forEach((event) => result.push({ ...event, col: colIndex, totalCols }));
   });
-  return result;
+  return [...result, ...fixedFieldEvents];
 }
 
 function getEventStyle(event: CalendarEvent & { col: number; totalCols: number }) {

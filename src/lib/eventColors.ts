@@ -1,5 +1,7 @@
 import { CalendarEvent } from "@/types/calendar";
 
+type EventType = "svw" | "schule" | "extern" | "unknown" | "gesperrt";
+
 type EventColorSet = {
   bg: string;
   border: string;
@@ -10,7 +12,7 @@ type EventColorSet = {
   dotColor: string;
 };
 
-const COLORS: Record<string, EventColorSet> = {
+const COLORS: Record<EventType, EventColorSet> = {
   svw: {
     bg: "",
     border: "",
@@ -47,10 +49,22 @@ const COLORS: Record<string, EventColorSet> = {
     borderColor: "#64748b",
     dotColor: "#64748b",
   },
+  gesperrt: {
+    bg: "",
+    border: "",
+    dot: "",
+    text: "text-slate-700 dark:text-slate-200",
+    backgroundColor: "rgba(107, 114, 128, 0.30)",
+    borderColor: "#6b7280",
+    dotColor: "#6b7280",
+  },
 };
 
-export function getEventType(event: CalendarEvent): "svw" | "schule" | "extern" | "unknown" {
-  if (event.bookingType) return event.bookingType;
+export function getEventType(event: CalendarEvent): EventType {
+  if (event.bookingType === "svw") return "svw";
+  if (event.bookingType === "schule") return "schule";
+  if (event.bookingType === "extern") return "extern";
+  if (event.bookingType === "gesperrt") return "gesperrt";
   if (event.sourceType === "calendar") return "svw";
   const sport = String(event.sport || "").toLowerCase();
   if (sport === "schule") return "schule";
