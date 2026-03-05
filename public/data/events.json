@@ -9,6 +9,7 @@
     "sport": "Fußball",
     "teamName": "AK 40",
     "sourceType": "calendar",
+    "bookingType": "svw",
     "sourceUrlHash": "2bbf941d688ad50a",
     "updatedAtIso": "2026-03-03T17:19:29.000Z",
     "verification": {
