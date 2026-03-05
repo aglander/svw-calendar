@@ -94,12 +94,14 @@ function getEventStyle(event: CalendarEvent & { col: number; totalCols: number }
   const startMinutes = event.date.getHours() * 60 + event.date.getMinutes();
   const endMinutes = event.endDate.getHours() * 60 + event.endDate.getMinutes();
   const top = ((startMinutes - HOUR_START * 60) / 60) * HOUR_HEIGHT;
-  const height = Math.max(((endMinutes - startMinutes) / 60) * HOUR_HEIGHT, 24);
+  const rawHeight = ((endMinutes - startMinutes) / 60) * HOUR_HEIGHT;
+  const verticalGapPx = 2;
+  const height = Math.max(rawHeight - verticalGapPx, 22);
   const widthPercent = 100 / event.totalCols;
   const leftPercent = widthPercent * event.col;
 
   return {
-    top: `${top}px`,
+    top: `${top + 1}px`,
     height: `${height}px`,
     left: `calc(${leftPercent}% + 1px)`,
     width: `calc(${widthPercent}% - 2px)`,
