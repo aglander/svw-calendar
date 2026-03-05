@@ -17,7 +17,9 @@ interface ShadowSlotJson {
   owner: string;
   ownerType: "svw" | "schule" | "extern" | "unknown";
   svwSport?: string | null;
-  field?: string;
+  field?: string | null;
+  fields?: string[];
+  fieldCount?: number;
 }
 
 interface CalendarContextType {
@@ -67,6 +69,8 @@ function parseEventJson(event: CalendarEventJson): CalendarEvent {
     verification: event.verification,
     sourceType: event.sourceType || "calendar",
     bookingType: event.bookingType || "svw",
+    fieldColumn: event.fieldColumn,
+    fieldSpan: event.fieldSpan,
   };
 }
 
@@ -88,6 +92,15 @@ function parseTimeToMinutes(value: string): number | null {
 
 function slug(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function toFieldColumn(value?: string | null): 1 | 2 | undefined {
+  if (!value) return undefined;
+  const match = /feld\s*(\d+)/i.exec(value);
+  if (!match) return undefined;
+  if (match[1] === "1") return 1;
+  if (match[1] === "2") return 2;
+  return undefined;
 }
 
 export function CalendarProvider({ children }: { children: React.ReactNode }) {
@@ -224,8 +237,13 @@ export function CalendarProvider({ children }: { children: React.ReactNode }) {
               : "Unbekannt";
       const owner = String(slot.owner || "Belegung");
       const displayName = slot.ownerType === "extern" ? "Extern" : owner;
-      const showFieldSuffix =
-        Boolean(slot.field) && (venue === "MZH" || venue === "Sportplatz");
+      const isTwoFieldVenue = venue === "MZH" || venue === "Sportplatz";
+      const isFullPlaceSlot =
+        isTwoFieldVenue &&
+        Array.isArray(slot.fields) &&
+        slot.fields.includes("Feld 1") &&
+        slot.fields.includes("Feld 2");
+      const showFieldSuffix = Boolean(slot.field) && isTwoFieldVenue && !isFullPlaceSlot;
       const field = showFieldSuffix ? ` (${slot.field})` : "";
       const teamId = `shadow-${slot.ownerType}-${slug(owner) || "owner"}`;
 
@@ -236,17 +254,33 @@ export function CalendarProvider({ children }: { children: React.ReactNode }) {
         const end = new Date(day);
         end.setHours(Math.floor(endMinutes / 60), endMinutes % 60, 0, 0);
 
-        events.push({
-          id: `shadow-${slotIndex}-${day.toISOString().slice(0, 10)}-${teamId}`,
+        const idBase = `shadow-${slotIndex}-${day.toISOString().slice(0, 10)}-${teamId}`;
+        const baseEvent = {
           title: `${displayName}${field}`,
           date: start,
           endDate: end,
           venue,
-          teamId,
           sport,
           teamName: owner,
-          sourceType: "shadow",
+          sourceType: "shadow" as const,
           bookingType: slot.ownerType,
+        };
+
+        if (isFullPlaceSlot) {
+          events.push({
+            ...baseEvent,
+            id: idBase,
+            teamId,
+            fieldSpan: 2,
+          });
+          return;
+        }
+
+        events.push({
+          ...baseEvent,
+          id: idBase,
+          teamId,
+          fieldColumn: toFieldColumn(slot.field),
         });
       });
     });

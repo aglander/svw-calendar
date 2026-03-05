@@ -26,6 +26,8 @@ export interface CalendarEvent {
   verification?: EventVerification;
   sourceType?: "calendar" | "shadow";
   bookingType?: "svw" | "schule" | "extern" | "unknown" | "gesperrt";
+  fieldColumn?: 1 | 2;
+  fieldSpan?: 1 | 2;
 }
 
 export type CalendarView = "day" | "week" | "month";
@@ -46,6 +48,8 @@ export interface CalendarEventJson {
   verification?: EventVerification;
   sourceType?: "calendar" | "shadow";
   bookingType?: "svw" | "schule" | "extern" | "unknown" | "gesperrt";
+  fieldColumn?: 1 | 2;
+  fieldSpan?: 1 | 2;
 }
 
 export interface EventVerification {

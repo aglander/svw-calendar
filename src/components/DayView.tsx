@@ -44,6 +44,9 @@ function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; 
     if (event.sourceType !== "shadow") return null;
     if (event.venue !== "MZH" && event.venue !== "Sportplatz") return null;
 
+    if (event.fieldColumn === 1) return 0;
+    if (event.fieldColumn === 2) return 1;
+
     const match = /\(Feld\s*(\d+)\)/i.exec(event.title);
     if (!match) return null;
 
@@ -54,9 +57,19 @@ function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; 
   };
 
   const fixedFieldEvents: (CalendarEvent & { col: number; totalCols: number })[] = [];
+  const fullSpanEvents: (CalendarEvent & { col: number; totalCols: number })[] = [];
   const regularEvents: CalendarEvent[] = [];
 
   sorted.forEach((event) => {
+    const isFullSpan =
+      event.sourceType === "shadow" &&
+      (event.venue === "MZH" || event.venue === "Sportplatz") &&
+      event.fieldSpan === 2;
+    if (isFullSpan) {
+      fullSpanEvents.push({ ...event, col: 0, totalCols: 1 });
+      return;
+    }
+
     const fixedCol = getFixedFieldColumn(event);
     if (fixedCol !== null) {
       fixedFieldEvents.push({ ...event, col: fixedCol, totalCols: 2 });
@@ -66,7 +79,7 @@ function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; 
   });
 
   if (regularEvents.length === 0) {
-    return fixedFieldEvents;
+    return [...fullSpanEvents, ...fixedFieldEvents];
   }
 
   const columns: CalendarEvent[][] = [];
@@ -94,7 +107,7 @@ function layoutEvents(events: CalendarEvent[]): (CalendarEvent & { col: number; 
     });
   });
 
-  return [...result, ...fixedFieldEvents];
+  return [...fullSpanEvents, ...result, ...fixedFieldEvents];
 }
 
 function getEventStyle(event: CalendarEvent & { col: number; totalCols: number }) {
